@@ -1,5 +1,4 @@
 import json
-from pprint import pprint
 import csv
 
 def gettime(timeline):
