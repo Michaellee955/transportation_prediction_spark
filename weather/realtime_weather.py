@@ -4,7 +4,7 @@ import time
 import datetime
 
 city_id = 5128581
-APP_ID = "04259690c79731a13bcf68ea887225bb"
+APP_ID = "XXX"
 url = "http://api.openweathermap.org/data/2.5/weather?id={}&APPID={}".format(city_id,APP_ID)
 
 def getweather(weather):
