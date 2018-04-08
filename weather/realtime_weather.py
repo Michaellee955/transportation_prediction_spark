@@ -3,7 +3,7 @@ import requests
 import time
 import datetime
 import key
-"04259690c79731a13bcf68ea887225bb"
+
 city_id = 5128581
 APP_ID = key.APPID
 url = "http://api.openweathermap.org/data/2.5/weather?id={}&APPID={}".format(city_id,APP_ID)
@@ -53,7 +53,7 @@ while(True):
         weather_code = getweather(weather['weather'])
         new_row = [timestamp,month,date,hour,minute,temp,pressure,humidity,wind_sp,wind_de,cloud,weather_code]
 
-        with open(filename,'a') as file:
+        with open(filename, 'a') as file:
             writer = csv.writer(file)
             writer.writerow(new_row)
         print("one more piece of weather imported")
