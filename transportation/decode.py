@@ -22,11 +22,11 @@ dup = []
 dupli = False
 en=[]
 path='https://datamine-history.s3.amazonaws.com/gtfs'
-year= 2017
+year= 2018
 month= 9
 duplicate= -2
 day_in_month=(31,28,31,30,31,30,31,31,30,31,30,31)
-for month in range(10, 12):
+for month in range(3, 4):
 	for day in range (1, day_in_month[month-1]+1):
 		hour = -1
 		if(datetime.date(2017, month, day).weekday()>4):
@@ -74,6 +74,8 @@ for month in range(10, 12):
 							if(i== trip_id):
 								dupli= True
 								num=0
+								if(len(en[num_t].stop_time_update)==0):
+									break
 								en_stop_ip= en[num_t].stop_time_update
 								tt=t.stop_time_update
 								if(len(en_stop_ip)< len(tt)):
