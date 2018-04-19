@@ -77,11 +77,14 @@ def combine(filename_weather, filename_trans,LINE):
         result = []
         for row in reader:
             timestamp = row[0]
-            weather = weather_dict[timestamp]
-            cur = list(weather.split(" "))
-            for i in range(1,6):
-                cur.append(row[i])
-            result.append(cur)
+            try:
+                weather = weather_dict[timestamp]
+                cur = list(weather.split(" "))
+                for i in range(1,6):
+                    cur.append(row[i])
+                result.append(cur)
+            except KeyError:
+                pass
         save(result,LINE)
 
 def save(result,LINE):
@@ -123,6 +126,10 @@ class parse_delay_files(object):
             hour = int(content.split(':')[0])
             minute = int(content.split(':')[1])
             delay = int(content.split(':')[2])
+            if delay > 2:
+                delay=2
+            elif delay<-2:
+                delay = -2
             """
             if delay >-10  and delay <10:
                 if None is dict_ave.get(hour):
@@ -142,11 +149,10 @@ class parse_delay_files(object):
             print(timestamp)
             cur_line.append([timestamp,line_num,station_id,station_dir,dict_ave[key]])
         """
-            if delay<10 and delay>-10:
-                hour = "{0:0=2d}".format(hour)
-                minute = "{0:0=2d}".format(minute)
-                timestamp = str(year) + str(month) + str(date) + str(hour)
-                cur_line.append([timestamp,minute,line_num,station_id,station_dir,delay])
+            hour = "{0:0=2d}".format(hour)
+            minute = "{0:0=2d}".format(minute)
+            timestamp = str(year) + str(month) + str(date) + str(hour)
+            cur_line.append([timestamp,minute,line_num,station_id,station_dir,delay])
         self.save(cur_line)
 
 
