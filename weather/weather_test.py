@@ -77,11 +77,14 @@ def combine(filename_weather, filename_trans,LINE):
         result = []
         for row in reader:
             timestamp = row[0]
-            weather = weather_dict[timestamp]
-            cur = list(weather.split(" "))
-            for i in range(1,5):
-                cur.append(row[i])
-            result.append(cur)
+            try:
+                weather = weather_dict[timestamp]
+                cur = list(weather.split(" "))
+                for i in range(1,6):
+                    cur.append(row[i])
+                result.append(cur)
+            except KeyError:
+                pass
         save(result,LINE)
 
 def save(result,LINE):
@@ -111,16 +114,23 @@ class parse_delay_files(object):
             for item in line:
                 wr.writerow(item)
 
-    def hourly_window(self,title,reader):
+    def minute_window(self,title,reader):
         year,month,date,station,line_num = self.title_process(title)
         station_id = station[:-1]
         station_dir = station[-1:]
-        dict_ave = {}
-        dict_count = {}
+        #dict_ave = {}
+        #dict_count = {}
+        cur_line = []
         for line in reader:
             content = line[0]
             hour = int(content.split(':')[0])
+            minute = int(content.split(':')[1])
             delay = int(content.split(':')[2])
+            if delay > 2:
+                delay=2
+            elif delay<-2:
+                delay = -2
+            """
             if delay >-10  and delay <10:
                 if None is dict_ave.get(hour):
                     dict_ave[hour] = min(10,delay)
@@ -134,15 +144,20 @@ class parse_delay_files(object):
         for i,key in enumerate(dict_ave):
             dict_ave[key] = dict_ave[key]/dict_count[key]
             hour = "{0:0=2d}".format(key)
+            minute = "{0:0=2d}".format(minute)
             timestamp = str(year)+str(month)+str(date)+str(hour)
             print(timestamp)
             cur_line.append([timestamp,line_num,station_id,station_dir,dict_ave[key]])
+        """
+            hour = "{0:0=2d}".format(hour)
+            minute = "{0:0=2d}".format(minute)
+            timestamp = str(year) + str(month) + str(date) + str(hour)
+            cur_line.append([timestamp,minute,line_num,station_id,station_dir,delay])
         self.save(cur_line)
 
 
 
     def file_iterate(self):
-        #dir = self.dir_path.replace('/','\\')
         dir = self.dir_path+'/transportation/delay/{}'.format(self.LINE)
         for file in os.listdir(dir):
             filename = os.fsdecode(file)
@@ -150,7 +165,7 @@ class parse_delay_files(object):
                 cur_file = dir + '/' + filename
                 with open(cur_file,'r') as delay_file:
                     reader = csv.reader(delay_file)
-                    self.hourly_window(filename,reader)
+                    self.minute_window(filename,reader)
 
 class construct_dataset(object):
 
@@ -167,7 +182,7 @@ class construct_dataset(object):
                 index = line[-4]+'_'+line[-3]+'_'+line[-2]
                 features = []
                 for i in range(len(line)):
-                    if i != 10 and i!=11 and i!=12:
+                    if i != 11 and i!=12 and i!=13:
                         features.append(line[i])
                 if None is dict_dataset.get(index):
                     dict_dataset[index] = []
@@ -194,7 +209,7 @@ if __name__ == '__main__':
     #parse_weather(filename_meta)
     filename_result = 'weather.csv'
     filename_dict = 'weatherDict.txt'
-    filename_trans = 'filename_trans_1.csv'
+    filename_trans = 'filename_trans_2.csv'
     filename_feature_1 = 'feature_space_1.csv'
     filename_feature_2 = 'feature_space_2.csv'
     dict = convert(filename_result)
