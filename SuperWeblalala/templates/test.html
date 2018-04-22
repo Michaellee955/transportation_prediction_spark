@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+{% block content %}
+<html>
+<style>
+
+
+    table.dataintable {
+    border: 1px solid #888888;
+    border-collapse: collapse;
+    font-family: Arial,Helvetica,sans-serif;
+    margin-top: 10px;
+    width: 100%;
+    }
+    table.dataintable th {
+    background-color: #CCCCCC;
+    border: 1px solid #888888;
+    padding: 5px 5px 15px 5px;
+    text-align: left;
+    vertical-align: baseline;
+    }
+    table.dataintable td {
+    background-color: #EFEFEF;
+    border: 1px solid #AAAAAA;
+    padding: 5px 5px 15px 5px;
+    vertical-align: text-top;
+    }
+
+
+
+         #floating-panel {
+        position: absolute;
+        top: 200px;
+        left: 75%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+</style>
+
+
+<body>
+
+
+
+
+
+<form method="POST" action="/test" name="option">
+  <p>
+
+
+      <select name="option" value="Genre" style="width: 250px">
+
+  <option value="1_101_S">1S - Vn Crtlndt Pk 242 St</option>
+  <option value="1_103_S">1S - 238 St</option>
+  <option value="1_112_S">1S - 168 St</option>
+  <option value="1_115_S">1S - 137 St City College</option>
+  <option value="1_119_S">1S - 103 St</option>
+          <option value="1_120_S">1S - 96 St</option>
+  <option value="1_124_S">1S - 66 St Lincoln Ctr</option>
+  <option value="1_127_S">1S - Times Sq 42 St</option>
+  <option value="1_137_S">1S - Chambers St</option>
+  <option value="1_142_S">1S - South Ferry</option>
+            <option value="1_142_N">1N - South Ferry</option>
+  <option value="1_137_N">1N - Chambers St</option>
+  <option value="1_127_N">1N - Times Sq 42 St</option>
+  <option value="1_125_N">1N - 59 St Columbus Cir</option>
+  <option value="1_120_N">1N - 96 St</option>
+            <option value="1_115_N">1N - 137 St City College</option>
+  <option value="1_112_N">1N - 168 St</option>
+  <option value="1_104_N">1N - 231 St</option>
+  <option value="1_103_N">1N - 238 St</option>
+  <option value="1_101_N">1N - Vn Crtlndt Pk 242 St</option>
+            <option value="2_201_S">2S - Wakefield 241 St</option>
+  <option value="2_213_S">2S - E 180 St</option>
+  <option value="2_221_S">2S - 149 St</option>
+  <option value="2_224_S">2S - 135 St</option>
+  <option value="2_120_S">2S - 96 St</option>
+            <option value="2_127_S">2S - Times Sq 42 St</option>
+  <option value="2_132_S">2S - 14 St</option>
+  <option value="2_137_S">2S - Chambers St</option>
+  <option value="2_235_S">2S - Atlantic Av-Barclays Ctr</option>
+  <option value="2_239_S">2S - Franklin Av</option>
+            <option value="2_247_S">2S - Flatbush Av</option>
+  <option value="2_247_N">2N - Flatbush Av</option>
+  <option value="2_239_N">2N - Franklin Av</option>
+  <option value="2_235_N">2N - Atlantic Av-Barclays Ctr</option>
+  <option value="2_137_N">2N - Chambers St</option>
+            <option value="2_132_N">2N - 14 St</option>
+  <option value="2_127_N">2N - Times Sq 42 St</option>
+  <option value="2_120_N">2N - 96 St</option>
+  <option value="2_224_N">2N - 135 St</option>
+  <option value="2_221_N">2N - 149 St</option>
+            <option value="2_213_N">2N - E 180 St</option>
+  <option value="2_201_N">2N - Wakefield 241 St</option>
+
+</select>
+
+  <button type="submit">See Delay</button>
+  </p>
+</form>
+
+
+
+<h1>Delay Prediction</h1>
+  <div>
+
+
+    <table class="dataintable">
+      <tr>
+        <th>Line</th>
+        <th>Direction</th>
+        <th>Stop</th>
+          <th>Delay</th>
+      </tr>
+      <tr>
+        <td>{{m['line']}}</td>
+        <td>{{m['direction']}}</td>
+        <td>{{m['stop']}}</td>
+          <td>{{m['delay']}}</td>
+      </tr>
+    </table>
+
+  </div>
+
+
+
+
+</body>
+</html>
+{% endblock %}
