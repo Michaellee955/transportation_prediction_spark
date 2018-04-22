@@ -81,21 +81,35 @@ def transit():
         print("No....")
     return render_template("testold.html",geocode=geocode)
 
+def form(delay):
+    mag = 30.0
+    d = round(delay*60,2)
+    result = 0
+    if d>0:
+        result = mag
+    elif d<0:
+        result = d-mag
+
+    return result
+
 def predictQuery(result):
     print(result)
-    delay_dict = {}
+    result_list = []
     for item in result:
+        delay_dict = {}
         lines = item['Line']
         stops = item['Stops']
+        delay_list = []
         for i in range(len(lines)):
             delay = 0
             if 'S' in stops[i] or 'N' in stops[i]:
                 if lines[i]=='1' or lines[i]=='2':
                     delay = list(predict(lines[i],stops[i]))[0]
-            identifier = '{}_{}'.format(lines[i],stops[i])
-            delay_dict[identifier] = delay
-
-    return delay_dict
+                delay_list.append(form(delay))
+        item['delay'] = delay_list
+        result_list.append(item)
+        print(result_list)
+    return None
 
 if __name__ == "__main__":
     app.run(debug=True)
