@@ -1,0 +1,183 @@
+{% extends "layout.html" %}
+{% block content %}
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Travel modes in directions</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+        top:20px;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 0px;
+        left: 75%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+          table.dataintable {
+    border: 1px solid #888888;
+    border-collapse: collapse;
+    font-family: Arial,Helvetica,sans-serif;
+    margin-top: 10px;
+    width: 100%;
+    }
+    table.dataintable th {
+    background-color: #CCCCCC;
+    border: 1px solid #888888;
+    padding: 5px 5px 15px 5px;
+    text-align: left;
+    vertical-align: baseline;
+    }
+    table.dataintable td {
+    background-color: #EFEFEF;
+    border: 1px solid #AAAAAA;
+    padding: 5px 5px 15px 5px;
+    vertical-align: text-top;
+    }
+    </style>
+  </head>
+  <body>
+
+
+  <h1>Delay Prediction</h1>
+  <div>
+      {% if e %}
+      {{e}}
+      {% else %}
+{% for n in d %}
+
+    <table class="dataintable">
+
+      <tr>
+        <th>Line</th>
+        <th>Direction</th>
+        <th>Stop</th>
+          <th>Delay</th>
+      </tr>
+      <tr>
+        <td>{{n['Line']}}</td>
+        <td>{{n['Direction']}}</td>
+        <td>{{n['Stops']}}</td>
+          <td>{{n['delay']}}</td>
+      </tr>
+    </table>
+
+{% endfor %}
+      {% endif %}
+  </div>
+
+
+    <div id="floating-panel">
+    <b>Mode of Travel: </b>
+    <select id="mode">
+        <option value="TRANSIT">Transit</option>
+      <option value="DRIVING">Driving</option>
+      <option value="WALKING">Walking</option>
+      <option value="BICYCLING">Bicycling</option>
+
+    </select>
+    </div>
+    <div id="map"></div>
+
+
+<script>
+var myGeocode = ['{{ geocode[0] }}', '{{ geocode[1] }}','{{ geocode[2] }}','{{ geocode[3] }}'];
+
+var map;
+
+function initMap() {
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var directionsService = new google.maps.DirectionsService;
+        var start1=myGeocode[0];
+        var end1=myGeocode[1];
+        var start2=myGeocode[2];
+        var end2=myGeocode[3];
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: {lat: 37.77, lng: -122.447}
+        });
+
+        directionsDisplay.setMap(map);
+        calculateAndDisplayRoute(directionsService, directionsDisplay,start1,end1,start2,end2);
+        document.getElementById('mode').addEventListener('change', function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay,start1,end1,start2,end2);
+        });
+      }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay,start1,end1,start2,end2) {
+        var directionsDisplay_new;
+        var selectedMode = document.getElementById('mode').value;
+        var start1s=parseFloat(start1);
+        var end1s=parseFloat(end1);
+        var start2s=parseFloat(start2);
+        var end2s=parseFloat(end2);
+
+        console.log(start1s);
+        console.log(end1s);
+        console.log(start2s);
+        console.log(end2s);
+
+
+        directionsService.route({
+
+          //origin: {lat: 37.77, lng: -122.447},  // Haight.
+          //destination: {lat: 37.768, lng: -122.511},  // Ocean Beach.
+          origin:{lat:start1s,lng:end1s},
+          destination:{lat:start2s,lng:end2s},
+          // Note that Javascript allows us to access the constant
+          // using square brackets and a string value as its
+          // "property."
+          travelMode: google.maps.TravelMode[selectedMode],
+          provideRouteAlternatives:true
+        }, function(response, status) {
+          if (status == 'OK') {
+          var l=response.routes.length;
+          var i;
+          for (i=0; i<l; i++){
+
+          var new_response=response;
+          var tmp_array=[response.routes[i]];
+          new_response.routes[0]=tmp_array[0];
+          console.log(new_response);
+
+          directionsDisplay_new = new google.maps.DirectionsRenderer;
+          directionsDisplay_new.setMap(map);
+          directionsDisplay_new.setDirections(new_response);
+          };
+
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
+
+</script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHswQXkT2wmHJXUeY6GvyTITMJF_iKC2k&callback=initMap">
+    </script>
+
+
+</body>
+</html>
+{% endblock %}
+
