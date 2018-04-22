@@ -115,32 +115,35 @@ def transit():
     print("\n\nSubway route:",route_step)
 
     transit_array=[]
-
     for i in range(len(route_step)):
         if route_step[i]!=None:
             print("route",i+1,"info:","\n")
             transit_array_element=[]
+            route_line= []
             transit_dict_element={}
             for j in range(int(route_step[i])):
                 transit_step=d[i]['legs'][0]['steps'][j]
                 if transit_step['travel_mode']=='TRANSIT':
                     transit_detail=transit_step['transit_details']
                     line_object=transit_detail['line']
+                    route_line.append(line_object['short_name'])
                     print("(1)route:",i+1,"(2)step:",j+1,"(3)stop:",transit_detail['departure_stop']['name'],"(4)line number:",line_object['short_name'],"(5)direction:",transit_detail['headsign'])
-                    temp= dis[transit_detail['departure_stop']['name']]
-                    if(line_object['short_name']=="1" and transit_detail['headsign']== "South Ferry"):
-                        temp+= "S"
-                    elif(line_object['short_name']=="1" and transit_detail['headsign']== "Van Cortlandt Park - 242 St"):
-                        temp+= "N"
-                    elif(line_object['short_name']=="2" and transit_detail['headsign']== "Wakefield - 241 St"):
-                        temp+= "S"
-                    elif(line_object['short_name']=="2" and transit_detail['headsign']== "Flatbush Av - Brooklyn College"):
-                        temp+= "N"
+                    if(transit_detail['departure_stop']['name'] in dis):
+                        temp= dis[transit_detail['departure_stop']['name']]
+                        if(line_object['short_name']=="1" and transit_detail['headsign']== "South Ferry"):
+                            temp+= "S"
+                        elif(line_object['short_name']=="1" and transit_detail['headsign']== "Van Cortlandt Park - 242 St"):
+                            temp+= "N"
+                        elif(line_object['short_name']=="2" and transit_detail['headsign']== "Wakefield - 241 St"):
+                            temp+= "S"
+                        elif(line_object['short_name']=="2" and transit_detail['headsign']== "Flatbush Av - Brooklyn College"):
+                            temp+= "N"
+                    else:
+                        temp= transit_detail['departure_stop']['name']
                     transit_array_element.append(temp)
                 else:
-
                     print("(1)route:",i+1,"(2)step:",j+1,"Walk to transit stop")
-            transit_dict_element['Line']=line_object['short_name']
+            transit_dict_element['Line']=route_line
             transit_dict_element['Direction']=transit_detail['headsign']
             transit_dict_element['Stops']=transit_array_element
             transit_array.append(transit_dict_element)
