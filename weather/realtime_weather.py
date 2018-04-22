@@ -4,6 +4,7 @@ import time
 import datetime
 import key
 import time
+import shutil
 import os
 city_id = 5128581
 APP_ID = key.APPID
@@ -39,6 +40,8 @@ while(True):
         time_now= time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         filename = './aa/real_time_'+time_now[11:13]+'.csv'
         if not os.path.exists(filename):
+            last_file= './aa/real_time_'+str(int(time_now[11:13])-1)+'.csv'
+            shutil.move(last_file,"/bb")
             with open(filename, 'w') as myfile:
                 wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
                 head = ["timestamp","month","date","hour","minute","temp","pressure","humidity","wind speed","wind direction","clouds","weather code"]
