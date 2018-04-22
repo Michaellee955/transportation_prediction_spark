@@ -3,7 +3,9 @@ import requests
 import time
 import datetime
 import key
-
+import time
+import shutil
+import os
 city_id = 5128581
 APP_ID = key.APPID
 url = "http://api.openweathermap.org/data/2.5/weather?id={}&APPID={}".format(city_id,APP_ID)
@@ -32,15 +34,19 @@ def gettime():
 
     return timestamp,month,date,hour,minute
 
-filename = 'real_time.csv'
-
-with open(filename, 'w') as myfile:
-    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-    head = ["timestamp","month","date","hour","minute","temp","pressure","humidity","wind speed","wind direction","clouds","weather code"]
-    wr.writerow(head)
 
 while(True):
     try:
+        time_now= time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        filename = './aa/real_time_'+time_now[11:13]+'.csv'
+        if not os.path.exists(filename):
+            last_file= './aa/real_time_'+str(int(time_now[11:13])-1)+'.csv'
+            shutil.move(last_file,"/bb")
+            with open(filename, 'w') as myfile:
+                wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+                head = ["timestamp","month","date","hour","minute","temp","pressure","humidity","wind speed","wind direction","clouds","weather code"]
+                wr.writerow(head)
+
         timestamp, month, date, hour, minute = gettime()
         real_weather = requests.get(url)
         weather = real_weather.json()
