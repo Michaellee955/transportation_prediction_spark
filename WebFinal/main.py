@@ -74,7 +74,7 @@ def transit():
     geocode=lat1,lon1,lat2,lon2
     #return render_template("test.html",geocode=geocode)
     result=parseStop(gmaps,start,end)
-    if result !=[]:
+    if result !=[]: 
         delay=predictQuery(result)
         print(delay)
     else:
@@ -93,23 +93,20 @@ def form(delay):
     return result
 
 def predictQuery(result):
-    print(result)
     result_list = []
     for item in result:
-        delay_dict = {}
         lines = item['Line']
         stops = item['Stops']
-        delay_list = []
+        delay_sum = 0
         for i in range(len(lines)):
             delay = 0
             if 'S' in stops[i] or 'N' in stops[i]:
                 if lines[i]=='1' or lines[i]=='2':
                     delay = list(predict(lines[i],stops[i]))[0]
-                delay_list.append(form(delay))
-        item['delay'] = delay_list
+            delay_sum += form(delay)
+        item['delay'] = delay_sum
         result_list.append(item)
-        print(result_list)
-    return None
+    return result_list
 
 if __name__ == "__main__":
     app.run(debug=True)
