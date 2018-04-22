@@ -23,9 +23,10 @@ def parseStop(gmaps,start,end):
         route_step.append(len(route_info['steps']))
 
     print("All route:",route_step)
+    print("\n"+"*************************")
 
     for i in range(len(route_step)):
-        print("route",i+1,"info:","\n")
+        print("\n","route",i+1,"info:")
         for j in range(int(route_step[i])):
             transit_step=d[i]['legs'][0]['steps'][j]
             if transit_step['travel_mode']=='TRANSIT':
@@ -43,11 +44,12 @@ def parseStop(gmaps,start,end):
 
 
     print("\n\nSubway route:",route_step)
+    print("\n"+"*************************")
 
     transit_array=[]
     for i in range(len(route_step)):
         if route_step[i]!=None:
-            print("route",i+1,"info:","\n")
+            print("\n","route",i+1,"info:")
             transit_array_element=[]
             route_line= []
             transit_dict_element={}
@@ -79,7 +81,7 @@ def parseStop(gmaps,start,end):
             transit_dict_element['Route']=i
             transit_array.append(transit_dict_element)
 
-    print(transit_array)
+    #print(transit_array)
 
 
     transit_array_result=[]
@@ -93,7 +95,7 @@ def parseStop(gmaps,start,end):
         item=json.loads(item)
         result.append(item)
 
-    print("Result:",result)
+    print("\n","Routes to be predicted:",result)
     #return render_template('transit.html')
     finalResult=[]
     for item in result:

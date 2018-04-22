@@ -41,6 +41,17 @@
         line-height: 30px;
         padding-left: 10px;
       }
+
+            #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
 </style>
 
 
@@ -129,7 +140,18 @@
   </div>
 
 
-
+<div id="map"></div>
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 40.8079104, lng: -73.9636046},
+          zoom: 8
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHswQXkT2wmHJXUeY6GvyTITMJF_iKC2k&callback=initMap"
+    async defer></script>
 
 </body>
 </html>

@@ -76,7 +76,7 @@ def transit():
     result=parseStop(gmaps,start,end)
     if result !=[]:
         delay=predictQuery(result)
-        print("Delay:",delay)
+        print("\n","Delay:",delay)
         delay_display=[]
         for item in delay:
             item['Route']=None
@@ -88,7 +88,7 @@ def transit():
         for item in delay_display:
             item=json.loads(item)
             delay_display_result.append(item)
-        print("Delay Display",delay_display_result)
+        print("\n","Delay Display",delay_display_result)
         d=delay_display_result
         return render_template("testold.html",geocode=geocode,d=d)
     else:
