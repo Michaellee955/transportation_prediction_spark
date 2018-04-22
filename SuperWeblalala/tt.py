@@ -3,9 +3,7 @@ import os
 import numpy as np
 from stack import StackingAveragedModels
 
-def predict(line,station):
-    dir = station[-1]
-    station = station[:-1]
+def predict(line,station,dir):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     name = line+'_'+station+'_'+dir
     model_dir = dir_path+'/models/{}.csv.sav'.format(name)
@@ -18,6 +16,5 @@ def predict(line,station):
     test = np.array(test).reshape(1,-1)
     #y_train_pred = loaded_model.predict(test)
     y_test_pred = loaded_model.predict(test)
+
     return y_test_pred
-
-
