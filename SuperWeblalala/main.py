@@ -41,12 +41,11 @@ def another2():
 def test():
     global api_key
     stop=request.form['option']
-    message=[]
     l=stop[:1]
     d=stop[6:8]
     s=stop[2:5]
 
-    delay = predict(l,s,d)
+    delay = predict(l,s+d)
 
     message={}
     message['line']=l
@@ -83,9 +82,20 @@ def transit():
     return render_template("testold.html",geocode=geocode)
 
 def predictQuery(result):
-    print("lalalala")
-    delay={}
-    return delay
+    print(result)
+    delay_dict = {}
+    for item in result:
+        lines = item['Line']
+        stops = item['Stops']
+        for i in range(len(lines)):
+            delay = 0
+            if 'S' in stops[i] or 'N' in stops[i]:
+                if lines[i]=='1' or lines[i]=='2':
+                    delay = list(predict(lines[i],stops[i]))[0]
+            identifier = '{}_{}'.format(lines[i],stops[i])
+            delay_dict[identifier] = delay
+
+    return delay_dict
 
 if __name__ == "__main__":
     app.run(debug=True)

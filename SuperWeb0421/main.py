@@ -7,6 +7,7 @@ import googlemaps
 from datetime import datetime
 import json
 from tt import predict
+from stack import StackingAveragedModels
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
