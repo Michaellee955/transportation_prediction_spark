@@ -9,7 +9,7 @@ def convert(filename):
         reader = csv.reader(file)
         next(reader,None)
         for row in reader:
-            timestamp = row[0]+row[1]+row[2]+row[3]
+            timestamp = row[0]+row[1]+row[2]+row[3] # YYYYMMDDHH
             content = row[1]+' '+row[2]+' '+row[3]+' '+row[4]+' '+row[5]+' '+row[6]+' '+row[7]+' '+row[8]+' '+row[9]+' '+row[10]
             dict[timestamp] = content
         return dict

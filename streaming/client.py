@@ -2,7 +2,7 @@ from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 import pickle
 
-def printrdd(x):
+def averdd(x):
     global dict,counts,i
     i += 1
     print(i)
@@ -50,6 +50,6 @@ if __name__ == '__main__':
     lines = ssc.textFileStream(local)
     count = lines.count()
     count.foreachRDD(f)
-    lines.foreachRDD(lambda rdd: rdd.foreach(printrdd))
+    lines.foreachRDD(lambda rdd: rdd.foreach(averdd))
     ssc.start()
     ssc.awaitTermination()

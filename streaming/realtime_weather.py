@@ -35,7 +35,7 @@ def gettime():
     return timestamp,month,date,hour,minute
 
 pre_wd = 180
-last_temp= None
+last_temp= "./aa/real_time_2018_04_24_11.csv"
 while(True):
     try:
         time_now= time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
