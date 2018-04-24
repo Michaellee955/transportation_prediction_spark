@@ -53,6 +53,8 @@ def parseStop(gmaps,start,end):
             transit_array_element=[]
             route_line= []
             transit_dict_element={}
+            arrival_time=d[i]['legs'][0]['arrival_time']['text']
+            print("arrival_time:",arrival_time)
             for j in range(int(route_step[i])):
                 transit_step=d[i]['legs'][0]['steps'][j]
                 if transit_step['travel_mode']=='TRANSIT':
@@ -79,6 +81,7 @@ def parseStop(gmaps,start,end):
             transit_dict_element['Direction']=transit_detail['headsign']
             transit_dict_element['Stops']=transit_array_element
             transit_dict_element['Route']=i
+            transit_dict_element['arrival']=arrival_time
             transit_array.append(transit_dict_element)
 
     #print(transit_array)

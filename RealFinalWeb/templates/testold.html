@@ -31,7 +31,8 @@
         line-height: 30px;
         padding-left: 10px;
       }
-          table.dataintable {
+
+    table.dataintable {
     border: 1px solid #888888;
     border-collapse: collapse;
     font-family: Arial,Helvetica,sans-serif;
@@ -41,14 +42,14 @@
     table.dataintable th {
     background-color: #CCCCCC;
     border: 1px solid #888888;
-    padding: 5px 5px 15px 5px;
+    padding: 5px 5px 5px 5px;
     text-align: left;
     vertical-align: baseline;
     }
     table.dataintable td {
     background-color: #EFEFEF;
     border: 1px solid #AAAAAA;
-    padding: 5px 5px 15px 5px;
+    padding: 5px 5px 5px 5px;
     vertical-align: text-top;
     }
     </style>
@@ -69,13 +70,17 @@
         <th>Line</th>
         <th>Direction</th>
         <th>Stop</th>
-          <th>Delay</th>
+          <th>Delay (seconds)</th>
+          <th>Arrival (no delay)</th>
+          <th>Arrival (with delay)</th>
       </tr>
       <tr>
         <td>{{n['Line']}}</td>
         <td>{{n['Direction']}}</td>
         <td>{{n['Stops']}}</td>
           <td>{{n['delay']}}</td>
+          <td>{{n['arrival']}}</td>
+          <td>{{n['arrival_time']}}</td>
       </tr>
     </table>
 
