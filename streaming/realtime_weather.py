@@ -39,10 +39,10 @@ pre_wd = 180
 while(True):
     try:
         time_now= time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        filename = './aa/real_time_'+time_now[11:13]+'.csv'
+        filename = './aa/real_time_'+str(int(time_now[11:13]))+'.csv'
         if not os.path.exists(filename):
             last_file= './aa/real_time_'+str(int(time_now[11:13])-1)+'.csv'
-            shutil.move(last_file,"./bb")
+            shutil.move(last_file,"./datasets")
             with open(filename, 'w') as myfile:
                 wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
                 #head = ["timestamp","month","date","hour","minute","temp","pressure","humidity","wind speed","wind direction","clouds","weather code"]

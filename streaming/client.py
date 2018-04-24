@@ -3,7 +3,9 @@ from pyspark.streaming import StreamingContext
 import pickle
 
 def printrdd(x):
-    global dict,i,counts
+    global dict,counts,i
+    i += 1
+    print(i)
     ts, mo, da, ho, mi, te, pr, hu, ws, wd, cl, wc = x.split(',')
     if mi=='0':
         init_dict()
@@ -34,7 +36,6 @@ def init_dict():
 def f(x):
     global counts
     counts = x.take(1)
-
     for item in counts:
         counts = item
 
@@ -45,7 +46,7 @@ if __name__ == '__main__':
     sc = SparkContext('local[2]','weather')
     ssc = StreamingContext(sc,10)
     #hd = 'hdfs://localhost:9000/User'
-    local = '/Users/michael/OneDrive/Documents/large_data_streaming/project/streaming/bb'
+    local = '/Users/michael/OneDrive/Documents/large_data_streaming/project/streaming/datasets'
     lines = ssc.textFileStream(local)
     count = lines.count()
     count.foreachRDD(f)
