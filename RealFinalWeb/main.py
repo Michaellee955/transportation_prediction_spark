@@ -65,7 +65,7 @@ def test():
     message['line']=l
     message['direction']=d
     message['stop']=s
-    message['delay']=delay
+    message['delay']=form(float(delay))
 
     return render_template("test.html", m=message)
 
