@@ -147,7 +147,7 @@ def form(delay):
     d = round(delay*60,2)
     result = 0
     if d>0:
-        result = mag
+        result = d+mag
     elif d<0:
         result = d-mag
     return result

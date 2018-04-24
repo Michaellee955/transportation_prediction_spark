@@ -7,6 +7,7 @@ def printrdd(x):
     ts, mo, da, ho, mi, te, pr, hu, ws, wd, cl, wc = x.split(',')
     if mi=='0':
         init_dict()
+    dict['hour'] = ho
     dict['temp'] += float(te)/counts
     dict['pressure'] += float(pr)/counts
     dict['humidity'] += float(hu)/counts
@@ -21,6 +22,7 @@ def printrdd(x):
 def init_dict():
     global dict
 
+    dict['hour'] = 0
     dict['temp'] = 0
     dict['pressure'] = 0
     dict['humidity'] = 0
