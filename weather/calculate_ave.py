@@ -7,7 +7,7 @@ import os
 
 def cal_ave(path):
 	data= []
-	with open(,"r") as f:
+	with open(path,"r") as f:
 		reader= csv.reader(f)
 		num=0
 		for row in (reader):

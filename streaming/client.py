@@ -1,15 +1,12 @@
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 import pickle
-import json
 
 def printrdd(x):
-    global counts,dict,temp,pressure,humidity,wind_sp,wind_de,clouds,weather_code
-    ts,mo,da,ho,mi,te,pr,hu,ws,wd,cl,wc=x.split(',')
-
+    global dict,i,counts
+    ts, mo, da, ho, mi, te, pr, hu, ws, wd, cl, wc = x.split(',')
     if mi=='0':
         init_dict()
-
     dict['temp'] += float(te)/counts
     dict['pressure'] += float(pr)/counts
     dict['humidity'] += float(hu)/counts
@@ -17,9 +14,9 @@ def printrdd(x):
     dict['wind_de'] += float(wd)/counts
     dict['clouds'] += float(cl)/counts
     dict['weather_code'] += float(wc)/counts
-    filename = 'test'
-    with open(filename,'wb') as myfile:
-        pickle.dump(dict,myfile)
+    filename = 'test.json'
+    with open(filename,'wb') as file:
+        pickle.dump(dict,file)
 
 def init_dict():
     global dict
@@ -32,17 +29,24 @@ def init_dict():
     dict['clouds'] = 0
     dict['weather_code'] = 0
 
+def f(x):
+    global counts
+    counts = x.take(1)
+
+    for item in counts:
+        counts = item
+
 if __name__ == '__main__':
-    global dict,temp,pressure,humidity,wind_sp,wind_de,clouds,weather_code
+    i = 0
     dict = {}
     init_dict()
     sc = SparkContext('local[2]','weather')
     ssc = StreamingContext(sc,10)
-    hd = 'hdfs://localhost:9000/User'
+    #hd = 'hdfs://localhost:9000/User'
     local = '/Users/michael/OneDrive/Documents/large_data_streaming/project/streaming/bb'
     lines = ssc.textFileStream(local)
-    global counts
-    counts = lines.count()
+    count = lines.count()
+    count.foreachRDD(f)
     lines.foreachRDD(lambda rdd: rdd.foreach(printrdd))
     ssc.start()
     ssc.awaitTermination()
