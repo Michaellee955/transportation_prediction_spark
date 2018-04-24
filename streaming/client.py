@@ -45,8 +45,8 @@ if __name__ == '__main__':
     init_dict()
     sc = SparkContext('local[2]','weather')
     ssc = StreamingContext(sc,10)
-    #hd = 'hdfs://localhost:9000/User'
-    local = '/Users/michael/OneDrive/Documents/large_data_streaming/project/streaming/datasets'
+    #/large_data_streaming/project/streaming/bb
+    local = '/Users/michael/OneDrive/Documents/large_data_streaming/project/streaming/datasets_streaming'
     lines = ssc.textFileStream(local)
     count = lines.count()
     count.foreachRDD(f)

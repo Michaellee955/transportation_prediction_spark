@@ -34,15 +34,18 @@ def gettime():
 
     return timestamp,month,date,hour,minute
 
-global pre_wd
 pre_wd = 180
+last_temp= None
 while(True):
     try:
-        time_now= time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        filename = './aa/real_time_'+str(int(time_now[11:13]))+'.csv'
+        time_now= time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
+        filename = './aa/real_time_'+time_now[:-6]+'.csv'
+        print(filename)
         if not os.path.exists(filename):
-            last_file= './aa/real_time_'+str(int(time_now[11:13])-1)+'.csv'
-            shutil.move(last_file,"./datasets")
+            print("hahahhaha")
+            if(last_temp!= None):
+                shutil.copy(last_temp,"./datasets_streaming")
+            last_temp= filename
             with open(filename, 'w') as myfile:
                 wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
                 #head = ["timestamp","month","date","hour","minute","temp","pressure","humidity","wind speed","wind direction","clouds","weather code"]
