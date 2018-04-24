@@ -34,27 +34,33 @@ def gettime():
 
     return timestamp,month,date,hour,minute
 
-
+global pre_wd
+pre_wd = 180
 while(True):
     try:
         time_now= time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         filename = './aa/real_time_'+time_now[11:13]+'.csv'
         if not os.path.exists(filename):
             last_file= './aa/real_time_'+str(int(time_now[11:13])-1)+'.csv'
-            shutil.move(last_file,"/bb")
+            shutil.move(last_file,"./bb")
             with open(filename, 'w') as myfile:
                 wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-                head = ["timestamp","month","date","hour","minute","temp","pressure","humidity","wind speed","wind direction","clouds","weather code"]
-                wr.writerow(head)
+                #head = ["timestamp","month","date","hour","minute","temp","pressure","humidity","wind speed","wind direction","clouds","weather code"]
+                #wr.writerow(head)
 
         timestamp, month, date, hour, minute = gettime()
         real_weather = requests.get(url)
         weather = real_weather.json()
         temp = weather['main']['temp']
+        #print(temp)
         pressure = weather['main']['pressure']
         humidity = weather['main']['humidity']
         wind_sp = weather['wind']['speed']
-        wind_de = weather['wind']['deg']
+        try:
+            wind_de = weather['wind']['deg']
+            pre_wd = wind_de
+        except:
+            wind_de = pre_wd
         cloud = weather['clouds']['all']
         weather_code = getweather(weather['weather'])
         new_row = [timestamp,month,date,hour,minute,temp,pressure,humidity,wind_sp,wind_de,cloud,weather_code]
@@ -64,6 +70,7 @@ while(True):
             writer.writerow(new_row)
         print("one more piece of weather imported")
         time.sleep(60)
+
     except:
         print("data format not matched or key rejected, waiting for 10 min")
         time.sleep(600)
